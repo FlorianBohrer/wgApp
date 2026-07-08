@@ -1,0 +1,20 @@
+{
+  "name": "wg-app-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.0.0",
+    "@fastify/multipart": "^9.0.0",
+    "@fastify/rate-limit": "^10.0.0",
+    "@fastify/static": "^8.0.0",
+    "bcryptjs": "^3.0.2",
+    "fastify": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "web-push": "^3.6.7"
+  }
+}
