@@ -1,6 +1,7 @@
 # WG-App 🏠
 
-Aufgaben mit fair rotierendem Putzplan, Einkaufslisten mit Echtzeit-Sync & Kosten-Splitting, gemeinsame Bucketlist — als installierbare PWA für die ganze WG. Anforderungen: [wg-app.spec.md](wg-app.spec.md), Produkt-Leitplanken: [PRODUCT.md](PRODUCT.md).
+Um mehr Erfahrung im Full-Stack bereich zusammeln ist dieser kleine Flattastic-Klon entstanden :)
+Mit dieser Webseite kann man Aufgaben mit fair rotierendem Putzplan, Einkaufslisten mit Echtzeit-Sync & Kosten-Splitting, gemeinsame Bucketlist — als installierbare PWA für die ganze WG verwenden. Anforderungen: [wg-app.spec.md](wg-app.spec.md), Produkt-Leitplanken: [PRODUCT.md](PRODUCT.md).
 
 **Stack:** Vue 3 + Vite + Pinia (PWA mit Service Worker) · Node/Fastify · SQLite (Node-builtin `node:sqlite`, keine nativen Abhängigkeiten) · SSE für Echtzeit · Web-Push.
 
