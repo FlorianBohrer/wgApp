@@ -21,6 +21,18 @@ const online = ref(navigator.onLine);
 const queued = ref(queueLength());
 const showNotifs = ref(false);
 
+// raumfarbe pro modul: attribut auf <html>, damit auch teleportierte sheets sie erben
+const ACCENTS = { '/einkauf': 'shopping', '/kosten': 'costs', '/bucketlist': 'bucket', '/mehr': 'more' };
+watch(
+  () => route.path,
+  (path) => {
+    const accent = ACCENTS[path];
+    if (accent) document.documentElement.dataset.accent = accent;
+    else delete document.documentElement.dataset.accent;
+  },
+  { immediate: true }
+);
+
 const tabs = [
   { path: '/aufgaben', label: 'Aufgaben', icon: 'M9 11.5l2 2 4-4.5M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z' },
   { path: '/einkauf', label: 'Einkauf', icon: 'M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.5a2 2 0 0 0 2-1.6L21 8H6M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z' },
@@ -120,9 +132,11 @@ onUnmounted(() => {
 
     <nav v-if="ready" class="tabbar" aria-label="Hauptnavigation">
       <router-link v-for="tab in tabs" :key="tab.path" :to="tab.path" class="tab" :class="{ active: route.path === tab.path }">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path :d="tab.icon" />
-        </svg>
+        <span class="tab-ico">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path :d="tab.icon" />
+          </svg>
+        </span>
         <span>{{ tab.label }}</span>
       </router-link>
     </nav>
@@ -148,8 +162,9 @@ onUnmounted(() => {
   width: 76px;
   height: 76px;
   border-radius: 22px;
-  background: var(--brand);
+  background: var(--brand-ink);
   color: #fff;
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.6rem;
   display: grid;
@@ -223,7 +238,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 8px 0 6px;
+  padding: 7px 0 6px;
   font-size: 0.68rem;
   font-weight: 600;
   color: var(--muted);
@@ -231,7 +246,17 @@ onUnmounted(() => {
   min-height: 54px;
 }
 
+.tab-ico {
+  display: grid;
+  place-items: center;
+  padding: 3px 14px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+/* der aktive tab zeigt die farbe seines raums */
 .tab.active { color: var(--brand-ink); }
+.tab.active .tab-ico { background: var(--brand-soft); }
 
 .notif {
   padding: 12px 2px;

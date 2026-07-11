@@ -204,9 +204,10 @@ onMounted(async () => {
 
 <style scoped>
 .invite-code {
-  font-size: 1.7rem;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   margin: 6px 0 12px;
   font-variant-numeric: tabular-nums;
 }

@@ -264,7 +264,7 @@ onMounted(refresh);
 }
 
 .list-tab .count {
-  background: var(--brand);
+  background: var(--brand-ink);
   color: #fff;
   border-radius: 999px;
   min-width: 20px;
@@ -288,7 +288,7 @@ onMounted(refresh);
   width: 48px;
   height: 48px;
   border-radius: var(--radius-sm);
-  background: var(--brand);
+  background: var(--brand-ink);
   color: #fff;
   display: grid;
   place-items: center;

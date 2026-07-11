@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router.js';
+import '@fontsource-variable/bricolage-grotesque';
 import './style.css';
 import { registerSW } from 'virtual:pwa-register';
 

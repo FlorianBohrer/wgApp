@@ -72,8 +72,9 @@ async function submit() {
   width: 68px;
   height: 68px;
   border-radius: 20px;
-  background: var(--brand);
+  background: var(--brand-ink);
   color: #fff;
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.5rem;
   display: grid;

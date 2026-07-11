@@ -63,7 +63,11 @@ const emit = defineEmits(['close']);
   padding: 10px 20px 6px;
 }
 
-.sheet-head h2 { font-size: 1.15rem; }
+.sheet-head h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
 
 .sheet-close {
   width: 44px;
