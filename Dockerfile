@@ -13,8 +13,6 @@ RUN npm --prefix client run build
 
 ENV NODE_ENV=production
 ENV PORT=3001
-# SQLite-Daten (DB, Fotos, Secrets) liegen hier — als Volume mounten!
-VOLUME /app/server/data
 EXPOSE 3001
 
 CMD ["node", "server/src/index.js"]
