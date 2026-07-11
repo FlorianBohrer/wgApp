@@ -172,17 +172,19 @@ onMounted(refresh);
         title="Liste ist leer"
         text="Tippe oben ein, was fehlt — alle sehen es sofort."
       />
-      <div v-for="item in activeList.open" :key="item.id" class="row">
-        <button class="check" role="checkbox" aria-checked="false" :aria-label="`${item.name} abhaken`" @click="openCheck(item)">
-          <span class="ring"></span>
-        </button>
-        <span class="row-main">
-          <span class="row-title">{{ item.name }}</span>
-          <span v-if="item.qty" class="muted small"> · {{ item.qty }}</span>
-        </span>
-        <Avatar :member="member(item.added_by)" :size="26" />
-        <button class="remove" :aria-label="`${item.name} entfernen`" @click="removeItem(item)">✕</button>
-      </div>
+      <TransitionGroup name="list" tag="div" class="item-list">
+        <div v-for="item in activeList.open" :key="item.id" class="row">
+          <button class="check" role="checkbox" aria-checked="false" :aria-label="`${item.name} abhaken`" @click="openCheck(item)">
+            <span class="ring"></span>
+          </button>
+          <span class="row-main">
+            <span class="row-title">{{ item.name }}</span>
+            <span v-if="item.qty" class="muted small"> · {{ item.qty }}</span>
+          </span>
+          <Avatar :member="member(item.added_by)" :size="26" />
+          <button class="remove" :aria-label="`${item.name} entfernen`" @click="removeItem(item)">✕</button>
+        </div>
+      </TransitionGroup>
 
       <!-- FR-SHOP-004: Zuletzt gekauft -->
       <template v-if="activeList.bought.length">
@@ -295,6 +297,14 @@ onMounted(refresh);
 }
 
 .add-btn:disabled { opacity: 0.4; }
+
+/* flip-choreografie: artikel gleiten, statt zu springen */
+.item-list { position: relative; }
+.list-move { transition: transform 0.3s var(--ease-out-quint); }
+.list-enter-active { transition: opacity 0.2s ease, transform 0.25s var(--ease-out-quint); }
+.list-enter-from { opacity: 0; transform: translateY(-8px); }
+.list-leave-active { transition: opacity 0.18s ease, transform 0.18s ease; position: absolute; left: 0; right: 0; }
+.list-leave-to { opacity: 0; transform: translateX(28px); }
 
 .dup-card { margin-bottom: 10px; border: 1.5px solid #f08c00; }
 .dup-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }

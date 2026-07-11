@@ -19,9 +19,14 @@
   --font-display: 'Bricolage Grotesque Variable', -apple-system, sans-serif;
   --radius: 16px;
   --radius-sm: 12px;
-  --shadow: 0 1px 2px rgba(26, 28, 34, 0.05), 0 4px 16px rgba(26, 28, 34, 0.06);
+  --shadow: 0 1px 1px rgba(26, 28, 34, 0.04), 0 8px 24px rgba(26, 28, 34, 0.07);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* federkurven: schnell raus, weich gelandet — kein cartoon-bounce */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-pop: linear(0, 0.32 9%, 0.72 18.6%, 0.94 26%, 1.05 33.9%, 1.079 38.4%, 1.075 43.3%, 1.01 60.2%, 0.996 74%, 1);
+  /* helle raumfarbe für die dunkle chrome-leiste */
+  --brand-bright: #20c997;
 }
 
 /* jeder bereich ist ein eigener raum: einkauf orange, kosten blau, bucketlist pink */
@@ -30,6 +35,7 @@
   --brand-ink: #bf400d;
   --brand-soft: #ffefe2;
   --wash: #f7f5f3;
+  --brand-bright: #ff922b;
 }
 
 [data-accent='costs'] {
@@ -37,6 +43,7 @@
   --brand-ink: #1864ab;
   --brand-soft: #e5f0fb;
   --wash: #f3f5f8;
+  --brand-bright: #4dabf7;
 }
 
 [data-accent='bucket'] {
@@ -44,6 +51,7 @@
   --brand-ink: #c2255c;
   --brand-soft: #ffe9f2;
   --wash: #f7f4f6;
+  --brand-bright: #f783ac;
 }
 
 [data-accent='more'] {
@@ -51,6 +59,7 @@
   --brand-ink: #343a40;
   --brand-soft: #eceef1;
   --wash: #f4f5f7;
+  --brand-bright: #ced4da;
 }
 
 * {
@@ -119,6 +128,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 /* ---------- Bausteine ---------- */
 .card {
   background: var(--card);
+  border: 1px solid rgba(26, 28, 34, 0.05);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 16px;
@@ -219,6 +229,27 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   font-weight: 800;
   letter-spacing: -0.02em;
   margin: 10px 4px 16px;
+  /* der raum announced sich: titel trägt die raumfarbe */
+  color: var(--brand-ink);
+  transition: color 0.25s ease;
+}
+
+/* seiten-übergang: der raum-morph (dezent, 1 moment pro wechsel) */
+.page-enter-active {
+  transition: opacity 0.28s ease, transform 0.28s var(--ease-out-quint);
+}
+
+.page-leave-active {
+  transition: opacity 0.14s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.page-leave-to {
+  opacity: 0;
 }
 
 /* Listenzeilen */
@@ -228,8 +259,15 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   gap: 12px;
   padding: 12px 14px;
   background: var(--card);
+  border: 1px solid rgba(26, 28, 34, 0.05);
   border-radius: var(--radius-sm);
   min-height: 56px;
+  transition: transform 0.12s var(--ease-out-quint);
+}
+
+/* taktiles press-feedback auf interaktiven zeilen */
+button.row:active {
+  transform: scale(0.985);
 }
 
 .row + .row { margin-top: 8px; }
@@ -257,13 +295,33 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
   border: 2px solid #c3c8d2;
   display: grid;
   place-items: center;
-  transition: all 0.12s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s var(--ease-out-quint);
+}
+
+.check:active .ring {
+  transform: scale(0.82);
 }
 
 .check.done .ring {
   background: var(--brand-ink);
   border-color: var(--brand-ink);
   color: #fff;
+  /* hero-moment: feder-pop beim abhaken */
+  animation: check-pop 0.4s var(--spring-pop);
+}
+
+.check.done .tick {
+  stroke-dasharray: 24;
+  animation: check-draw 0.25s 0.06s var(--ease-out-quint) both;
+}
+
+@keyframes check-pop {
+  from { transform: scale(0.7); }
+}
+
+@keyframes check-draw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
 }
 
 /* Überfällig: Farbe + Text, nie Farbe allein */

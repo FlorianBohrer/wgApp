@@ -198,7 +198,11 @@ onMounted(refresh);
             @click="openDetail(task)"
           >
             <span class="check" :class="{ done: task.status === 'done' }" @click.stop="toggleDone(task)" role="checkbox" :aria-checked="task.status === 'done'" :aria-label="`${task.title} erledigt`">
-              <span class="ring">{{ task.status === 'done' ? '✓' : '' }}</span>
+              <span class="ring">
+                <svg v-if="task.status === 'done'" viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
+                  <path class="tick" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
             </span>
             <span class="row-main">
               <span class="row-title" :class="{ struck: task.status === 'done' }">{{ task.title }}</span>

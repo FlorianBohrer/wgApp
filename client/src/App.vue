@@ -128,7 +128,11 @@ onUnmounted(() => {
       </button>
     </header>
 
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component" />
+      </Transition>
+    </router-view>
 
     <nav v-if="ready" class="tabbar" aria-label="Hauptnavigation">
       <router-link v-for="tab in tabs" :key="tab.path" :to="tab.path" class="tab" :class="{ active: route.path === tab.path }">
@@ -216,6 +220,7 @@ onUnmounted(() => {
   place-items: center;
 }
 
+/* dunkles ink-glas: auf der chrome-leiste leuchten die raumfarben */
 .tabbar {
   position: fixed;
   bottom: 0;
@@ -224,10 +229,10 @@ onUnmounted(() => {
   width: 100%;
   max-width: 560px;
   display: flex;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 1px solid var(--line);
+  background: rgba(23, 25, 31, 0.88);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   padding-bottom: var(--safe-bottom);
   z-index: 30;
 }
@@ -241,10 +246,13 @@ onUnmounted(() => {
   padding: 7px 0 6px;
   font-size: 0.68rem;
   font-weight: 600;
-  color: var(--muted);
+  color: #a6acb8;
   text-decoration: none;
   min-height: 54px;
+  transition: transform 0.12s var(--ease-out-quint);
 }
+
+.tab:active { transform: scale(0.94); }
 
 .tab-ico {
   display: grid;
@@ -254,9 +262,9 @@ onUnmounted(() => {
   transition: background-color 0.2s ease;
 }
 
-/* der aktive tab zeigt die farbe seines raums */
-.tab.active { color: var(--brand-ink); }
-.tab.active .tab-ico { background: var(--brand-soft); }
+/* der aktive tab leuchtet in der hellen raumfarbe */
+.tab.active { color: var(--brand-bright); }
+.tab.active .tab-ico { background: rgba(255, 255, 255, 0.12); }
 
 .notif {
   padding: 12px 2px;

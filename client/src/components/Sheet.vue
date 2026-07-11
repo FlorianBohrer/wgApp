@@ -30,7 +30,10 @@ const emit = defineEmits(['close']);
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 22, 28, 0.45);
+  /* material-tiefe: der raum dahinter wird weichgezeichnet */
+  background: rgba(20, 22, 28, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 50;
   display: flex;
   align-items: flex-end;
@@ -85,8 +88,11 @@ const emit = defineEmits(['close']);
   -webkit-overflow-scrolling: touch;
 }
 
-.sheet-enter-active, .sheet-leave-active { transition: opacity 0.18s ease; }
-.sheet-enter-active .sheet, .sheet-leave-active .sheet { transition: transform 0.22s ease; }
+/* voller slide von unten, exit schneller als enter */
+.sheet-enter-active { transition: opacity 0.25s ease; }
+.sheet-leave-active { transition: opacity 0.2s ease 0.05s; }
+.sheet-enter-active .sheet { transition: transform 0.42s var(--ease-out-quint); }
+.sheet-leave-active .sheet { transition: transform 0.25s ease-in; }
 .sheet-enter-from, .sheet-leave-to { opacity: 0; }
-.sheet-enter-from .sheet, .sheet-leave-to .sheet { transform: translateY(60px); }
+.sheet-enter-from .sheet, .sheet-leave-to .sheet { transform: translateY(100%); }
 </style>

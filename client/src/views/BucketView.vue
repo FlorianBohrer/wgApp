@@ -177,7 +177,7 @@ onMounted(refresh);
           </p>
         </button>
         <button class="vote" :class="{ voted: item.votes.includes(myId) }" :aria-pressed="item.votes.includes(myId)" :aria-label="`Für ${item.title} stimmen`" @click="vote(item)">
-          <span aria-hidden="true">{{ item.votes.includes(myId) ? '♥' : '♡' }}</span>
+          <span class="heart" aria-hidden="true">{{ item.votes.includes(myId) ? '♥' : '♡' }}</span>
           <span class="vote-count">{{ item.votes.length }}</span>
         </button>
       </div>
@@ -304,8 +304,16 @@ onMounted(refresh);
   background: var(--bg);
 }
 
+.vote { transition: transform 0.12s var(--ease-out-quint), background-color 0.15s ease, color 0.15s ease; }
+.vote:active { transform: scale(0.88); }
 .vote.voted { color: var(--danger); background: var(--danger-soft); }
+/* herz-pop beim abstimmen */
+.vote.voted .heart { display: inline-block; animation: heart-pop 0.4s var(--spring-pop); }
 .vote-count { font-size: 0.78rem; font-weight: 700; }
+
+@keyframes heart-pop {
+  from { transform: scale(0.6); }
+}
 
 .detail-desc { margin-bottom: 12px; }
 .detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
