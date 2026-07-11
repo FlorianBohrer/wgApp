@@ -125,6 +125,28 @@ check('In „Zuletzt gekauft"', r.data.lists[0].bought.some(i => i.name === 'Haf
 r = await api('GET', '/api/costs', users.Ben.token);
 check('Ausgabe „Hafermilch" angelegt', r.data.expenses.some(e => e.title === 'Hafermilch' && e.amount_cents === 219));
 
+console.log('Feedback-Reiter: Lob, App-Feedback, Erinnern');
+r = await api('POST', '/api/feedback/task', users.Anna.token, { toUser: users.Ben.id, rating: 'up', text: 'Danke fürs Einkaufen!' });
+check('Lob gesendet', r.status === 200, JSON.stringify(r.data));
+r = await api('POST', '/api/feedback/task', users.Anna.token, { toUser: users.Anna.id, rating: 'up' });
+check('Selbst-Lob → 400', r.status === 400);
+r = await api('POST', '/api/feedback/app', users.Ben.token, { text: 'Dark Mode wäre super.' });
+check('App-Feedback gesendet', r.status === 200);
+// offene aufgabe für carla anlegen und sie daran erinnern
+await api('POST', '/api/tasks', users.Anna.token, { title: 'Flur fegen', assignedTo: users.Carla.id });
+r = await api('GET', '/api/tasks', users.Anna.token);
+const remindTask = r.data.open.find(t => t.title === 'Flur fegen');
+r = await api('POST', '/api/feedback/remind', users.Anna.token, { taskId: remindTask.id });
+check('Erinnerung gesendet', r.status === 200, JSON.stringify(r.data));
+r = await api('POST', '/api/feedback/remind', users.Anna.token, { taskId: remindTask.id });
+check('Zweite Erinnerung < 12 h → 429', r.status === 429, `war ${r.status}`);
+r = await api('POST', '/api/feedback/remind', users.Carla.token, { taskId: remindTask.id });
+check('Eigene Aufgabe erinnern → 400', r.status === 400);
+r = await api('GET', '/api/feedback', users.Ben.token);
+check('Pinnwand enthält 3 Einträge', r.data.feed.length === 3, `waren ${r.data.feed.length}`);
+r = await api('GET', '/api/feedback', users.Dana.token);
+check('Fremde WG sieht Pinnwand nicht', r.data.feed.length === 0);
+
 console.log('Login-Sperre (FR-AUTH-004)');
 const email = `anna${suffix}@test.de`;
 for (let i = 0; i < 6; i++) await api('POST', '/api/auth/login', null, { email, password: 'falsch123' });

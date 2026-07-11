@@ -54,6 +54,14 @@
   --brand-bright: #f783ac;
 }
 
+[data-accent='feedback'] {
+  --brand: #7048e8;
+  --brand-ink: #5f3dc4;
+  --brand-soft: #f0ebfd;
+  --wash: #f5f4f8;
+  --brand-bright: #9775fa;
+}
+
 [data-accent='more'] {
   --brand: #495057;
   --brand-ink: #343a40;

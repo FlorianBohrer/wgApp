@@ -14,6 +14,7 @@ import taskRoutes from './routes/tasks.js';
 import shoppingRoutes from './routes/shopping.js';
 import costRoutes from './routes/costs.js';
 import bucketRoutes from './routes/bucket.js';
+import feedbackRoutes from './routes/feedback.js';
 import notificationRoutes from './routes/notifications.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -55,6 +56,7 @@ await app.register(taskRoutes);
 await app.register(shoppingRoutes);
 await app.register(costRoutes);
 await app.register(bucketRoutes);
+await app.register(feedbackRoutes);
 await app.register(notificationRoutes);
 
 app.get('/api/health', () => ({ ok: true }));

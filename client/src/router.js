@@ -10,6 +10,7 @@ const routes = [
   { path: '/einkauf', component: () => import('./views/ShoppingView.vue') },
   { path: '/kosten', component: () => import('./views/CostsView.vue') },
   { path: '/bucketlist', component: () => import('./views/BucketView.vue') },
+  { path: '/feedback', component: () => import('./views/FeedbackView.vue') },
   { path: '/mehr', component: () => import('./views/MoreView.vue') },
   { path: '/:pathMatch(.*)*', redirect: '/aufgaben' }
 ];

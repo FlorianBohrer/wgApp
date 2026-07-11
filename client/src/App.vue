@@ -2,7 +2,7 @@
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth.js';
-import { useTasksStore, useShoppingStore, useCostsStore, useBucketStore, useNotifStore } from './stores/data.js';
+import { useTasksStore, useShoppingStore, useCostsStore, useBucketStore, useFeedbackStore, useNotifStore } from './stores/data.js';
 import { connectEvents, disconnectEvents, flushQueue, queueLength } from './api.js';
 import { timeAgo } from './format.js';
 import Sheet from './components/Sheet.vue';
@@ -13,6 +13,7 @@ const tasks = useTasksStore();
 const shopping = useShoppingStore();
 const costs = useCostsStore();
 const bucket = useBucketStore();
+const feedback = useFeedbackStore();
 const notifs = useNotifStore();
 const route = useRoute();
 const router = useRouter();
@@ -22,7 +23,7 @@ const queued = ref(queueLength());
 const showNotifs = ref(false);
 
 // raumfarbe pro modul: attribut auf <html>, damit auch teleportierte sheets sie erben
-const ACCENTS = { '/einkauf': 'shopping', '/kosten': 'costs', '/bucketlist': 'bucket', '/mehr': 'more' };
+const ACCENTS = { '/einkauf': 'shopping', '/kosten': 'costs', '/bucketlist': 'bucket', '/feedback': 'feedback', '/mehr': 'more' };
 watch(
   () => route.path,
   (path) => {
@@ -38,6 +39,7 @@ const tabs = [
   { path: '/einkauf', label: 'Einkauf', icon: 'M3 4h2l2.4 12.2a2 2 0 0 0 2 1.8h7.5a2 2 0 0 0 2-1.6L21 8H6M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm9 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z' },
   { path: '/kosten', label: 'Kosten', icon: 'M15 9a3.5 3.5 0 0 0-3-1.5C9.5 7.5 8 9.5 8 12s1.5 4.5 4 4.5a3.5 3.5 0 0 0 3-1.5M6.5 10.5h5m-5 3h5M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z' },
   { path: '/bucketlist', label: 'Bucket', icon: 'M12 3l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.4l6-.9L12 3z' },
+  { path: '/feedback', label: 'Feedback', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM8 9h8m-8 4h5' },
   { path: '/mehr', label: 'Mehr', icon: 'M5 13a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z' }
 ];
 
@@ -49,6 +51,7 @@ function startRealtime() {
     tasks: () => tasks.fetch().catch(() => {}),
     costs: () => costs.fetch().catch(() => {}),
     bucket: () => bucket.fetch().catch(() => {}),
+    feedback: () => feedback.fetch().catch(() => {}),
     wg: () => Promise.all([auth.loadWg(), tasks.fetch()]).catch(() => {}),
     notification: () => notifs.fetch().catch(() => {})
   });

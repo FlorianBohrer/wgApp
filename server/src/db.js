@@ -217,6 +217,20 @@ CREATE TABLE IF NOT EXISTS attachments (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS feedback (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  wg_id INTEGER NOT NULL REFERENCES wgs(id),
+  type TEXT NOT NULL CHECK (type IN ('app','task','reminder')),
+  task_id INTEGER REFERENCES tasks(id) ON DELETE SET NULL,
+  task_title TEXT,
+  to_user INTEGER REFERENCES users(id),
+  rating TEXT CHECK (rating IN ('up','down')),
+  text TEXT,
+  from_user INTEGER NOT NULL REFERENCES users(id),
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_feedback_wg ON feedback(wg_id, id);
+
 CREATE TABLE IF NOT EXISTS notifications (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   wg_id INTEGER NOT NULL REFERENCES wgs(id),

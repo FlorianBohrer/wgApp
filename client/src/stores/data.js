@@ -44,6 +44,17 @@ export const useBucketStore = defineStore('bucket', {
   }
 });
 
+export const useFeedbackStore = defineStore('feedback', {
+  state: () => ({ feed: [], loaded: false }),
+  actions: {
+    async fetch() {
+      const data = await api('GET', '/api/feedback');
+      this.feed = data.feed;
+      this.loaded = true;
+    }
+  }
+});
+
 export const useNotifStore = defineStore('notifications', {
   state: () => ({ list: [], unread: 0, settings: null }),
   actions: {
